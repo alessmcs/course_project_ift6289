@@ -1,0 +1,14 @@
+.env
+.DS_Store
+.__pycache__
+.venv
+tmp
+
+# also the json files bc size 
+accepted_repo_files.jsonl
+accepted_repos.jsonl
+file_entities.jsonl
+
+candidate_repos.json
+commit_entities.jsonl
+repo_scores.json
