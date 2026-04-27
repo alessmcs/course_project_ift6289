@@ -2,8 +2,9 @@
 .DS_Store
 .__pycache__
 .venv
+.venv_stable
 tmp
 
 
-file_entities.jsonl
-commit_entities.jsonl
+*.jsonl
+*.json
