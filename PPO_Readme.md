@@ -66,3 +66,12 @@ Finally, run the PPO optimization:
 CUDA_VISIBLE_DEVICES=0,1,2,3 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
     python ppo.py --phase ppo
 ```
+
+
+---
+
+## Checkpoints
+
+The trained checkpoints are available at the following link:
+
+[Model Checkpoints](https://udemontreal-my.sharepoint.com/:f:/r/personal/hossein_raoufi_umontreal_ca/Documents/ppo_student?csf=1&web=1&e=9urC7a)
