@@ -24,7 +24,7 @@ Inside this folder, there is a dedicated `README.md` file that explains the full
 The final dataset is available on Zenodo:
 
 ```text
-[Add Zenodo link here]
+[[Add Zenodo link here]](https://zenodo.org/records/19828242)
 ```
 
 ---
