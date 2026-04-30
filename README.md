@@ -24,7 +24,7 @@ Inside this folder, there is a dedicated `README.md` file that explains the full
 The final dataset is available on Zenodo:
 
 ```text
-[[Add Zenodo link here]](https://zenodo.org/records/19828242)
+[Zenodo dataset](https://zenodo.org/records/19828242)
 ```
 
 ---
@@ -45,7 +45,7 @@ To run this step, you need to download the following models locally from Hugging
 You also need to use the dataset available on Zenodo:
 
 ```text
-[Add Zenodo link here]
+[Zenodo dataset](https://zenodo.org/records/19828242)
 ```
 
 You can use the `train` and `valid` splits to generate the draft answers and improved answers.
