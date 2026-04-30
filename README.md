@@ -1,154 +1,253 @@
-# Dataset Construction Pipeline
+# Course Project IFT6289
 
-This repository implements a pipeline to build a dataset of aligned **code–documentation pairs** and generate **question–answer samples**.
+This project uses **Python 3.13.12**.
 
----
+Our project contains several main steps:
 
-## Pipeline Overview
-
-The pipeline consists of the following steps:
-
-1. Repository discovery  
-2. Repository filtering and file extraction  
-3. Documentation entity extraction and alignment  
-4. Dataset sampling  
-5. Alignment verification (LLM-as-judge)  
-6. Question generation  
-7. Train/validation/test split  
+1. Dataset creation
+2. Draft and improved answer generation
+3. Fine-tuning with SFT and DPO
+4. Testing the fine-tuned checkpoints
 
 ---
 
-## Steps
+## 1. Dataset Creation
 
-### 1. Repository Discovery
+The code used to create the dataset, including the question generation pipeline, is located in:
 
-**`repo_discovery.py`**
-- Saves ~292 candidate repositories  
+```text
+dataset_code/
+```
 
----
+Inside this folder, there is a dedicated `README.md` file that explains the full dataset creation pipeline.
 
-### 2. Repository Filtering & File Extraction
+The final dataset is available on Zenodo:
 
-**`get_repo_files.py`**
-- Reads candidate repositories  
-- Filters based on:
-  - License  
-  - API density  
-- Outputs:
-  - `accepted_repos.jsonl`
-  - `accepted_repo_files.jsonl` (file contents)
+```text
+[Add Zenodo link here]
+```
 
 ---
 
-### 3. Diagnostics (Optional)
+## 2. Draft and Improved Answer Generation
 
-**`diagnostic_repo_stats.py`**
-- Provides a quick overview of accepted/rejected repositories  
-- Avoids running the full pipeline  
+The code for generating draft answers and improved answers is located in:
 
----
+```text
+answer_generation/
+```
 
-### 4. Repository Quality Evaluation (Unused)
+To run this step, you need to download the following models locally from Hugging Face:
 
-**`eval_repo_quality.py`**
-- Scores repositories based on:
-  - Core file density  
-  - Aggregated file metrics  
-  - Commit details and their impact on core files  
+- [Meta-Llama-3.1-8B-Instruct-GPTQ-INT4](https://huggingface.co/)
+- [Meta-Llama-3.1-70B-Instruct-GPTQ-INT4](https://huggingface.co/)
 
-**`file_metrics.py`**
-- Computes metrics at the file level  
-- Extracts documentation entities  
-- Outputs:
-  - `file_entities.jsonl`
+You also need to use the dataset available on Zenodo:
 
-**Note:**
-- Output file `repo_scores.jsonl` is not used  
-- Scoring logic remains commented out due to formatting issues  
+```text
+[Add Zenodo link here]
+```
+
+You can use the `train` and `valid` splits to generate the draft answers and improved answers.
 
 ---
 
-### 5. Documentation Alignment
+## 3. Fine-Tuning with SFT and DPO
 
-**`alignment.py`**
-- Processes documentation entities  
-- Performs alignment based on:
-  - Documentation type  
-  - Confidence levels (strong / medium)  
-- Outputs:
-  - `final_aligned_dataset.jsonl`
+After generating the draft and improved answers, we fine-tuned the models using:
 
----
+- **SFT**: Supervised Fine-Tuning
+- **DPO**: Direct Preference Optimization
 
-### 6. External Data (CodeSearchNet)
+The fine-tuning scripts are located in:
 
-**`csn_samples.py`**
-- Retrieves ~2k pairs from CodeSearchNet:
-  - Python (docstrings)  
-  - Java (Javadoc)  
-- Outputs:
-  - `csn_samples.jsonl`
+```text
+finetune/
+```
 
----
+The main scripts are:
 
-### 7. Training Sample Selection
+```text
+finetune/sft.py
+finetune/dpo.py
+```
 
-**`training_samples.py`**
-- Subsamples entities based on predefined quotas  
-- Reduces dataset size for efficient LLM usage  
-- Outputs:
-  - `training_dataset_final.jsonl`
+To run these scripts, you need the datasets containing the draft answers and improved answers.
+
+The training datasets are available here:
+
+[Training datasets](https://udemontreal-my.sharepoint.com/:f:/r/personal/imen_jaoua_umontreal_ca/Documents/dataset_checkpoints/dataset_training?csf=1&web=1&e=uFO1c9)
 
 ---
 
-### 8. Alignment Verification (LLM-as-Judge)
+## 4. Testing Checkpoints
 
-**`llm_judge_pilot.py`**
-- Validates alignment quality using an LLM  
-- Input:
-  - `training_dataset_final.jsonl` (~8100 samples)  
-- Filters low-quality pairs  
-- Outputs:
-  - `training_dataset_verified.jsonl` (~6400 samples)  
-  - `pilot_judgements.jsonl`
+The fine-tuned model checkpoints are available here:
 
----
+[Model checkpoints](https://udemontreal-my.sharepoint.com/:f:/r/personal/imen_jaoua_umontreal_ca/Documents/dataset_checkpoints/checkpoints?csf=1&web=1&e=y3PvT0)
 
-### 9. Question Generation
+To test a checkpoint, use the script located in:
 
-**`gen_questions/inference.py`**
-- Generates questions for the verified dataset  
-- Outputs:
-  - `results.jsonl`
+```text
+test_generation/test.py
+```
 
----
+Before running the script, update the following paths inside `test.py`:
 
-### 10. Dataset Splitting
+- the checkpoint path
+- the test set path
 
-**`split_dataset.py`**
-- Splits dataset into:
-  - Train / Validation / Test  
-- Uses **repo-wise splitting** to avoid data leakage  
-- Input:
-  - `results.jsonl`  
-- Outputs:
-  - train / val / test datasets  
+Then run the script to generate outputs using the selected checkpoint.
 
 ---
 
-## Final Outputs
+## Project Structure
 
-- `final_aligned_dataset.jsonl`
-- `training_dataset_verified.jsonl`
-- `results.jsonl`
-- Train / validation / test splits  
+```text
+course_project_ift6289/
+│
+├── dataset_code/
+│   └── README.md
+│
+├── answer_generation/
+│   └── answer_generation.py
+│
+├── finetune/
+│   ├── sft.py
+│   └── dpo.py
+│
+├── test_generation/
+│   └── test.py
+│
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Installation
+
+First, clone the repository:
+
+```bash
+git clone https://github.com/alessmcs/course_project_ift6289.git
+cd course_project_ift6289
+```
+
+Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Running the Pipeline
+
+### Step 1: Create the Dataset
+
+Go to the dataset creation folder:
+
+```bash
+cd dataset_code
+```
+
+Follow the instructions in the `dataset_code/README.md` file.
+
+---
+
+### Step 2: Generate Draft and Improved Answers
+
+Go to the answer generation folder:
+
+```bash
+cd answer_generation
+```
+
+Make sure the required Hugging Face models are downloaded locally:
+
+- `Meta-Llama-3.1-8B-Instruct-GPTQ-INT4`
+- `Meta-Llama-3.1-70B-Instruct-GPTQ-INT4`
+
+Then run the answer generation script using the dataset from Zenodo.
+
+---
+
+### Step 3: Fine-Tune the Models
+
+Go to the fine-tuning folder:
+
+```bash
+cd finetune
+```
+
+Run SFT:
+
+```bash
+python sft.py
+```
+
+Run DPO:
+
+```bash
+python dpo.py
+```
+
+Before running these scripts, make sure the paths to the training datasets are correctly set.
+
+The training datasets can be downloaded here:
+
+[Training datasets](https://udemontreal-my.sharepoint.com/:f:/r/personal/imen_jaoua_umontreal_ca/Documents/dataset_checkpoints/dataset_training?csf=1&web=1&e=uFO1c9)
+
+---
+
+### Step 4: Test a Checkpoint
+
+Go to the test generation folder:
+
+```bash
+cd test_generation
+```
+
+Edit `test.py` and update:
+
+- the checkpoint path
+- the test set path
+
+Then run:
+
+```bash
+python test.py
+```
+
+The checkpoints can be downloaded here:
+
+[Model checkpoints](https://udemontreal-my.sharepoint.com/:f:/r/personal/imen_jaoua_umontreal_ca/Documents/dataset_checkpoints/checkpoints?csf=1&web=1&e=y3PvT0)
+
+---
+
+## External Resources
+
+### Dataset
+
+The final dataset is available on Zenodo:
+
+```text
+https://zenodo.org/records/19828242
+```
+
+### Training Datasets
+
+[Training datasets](https://udemontreal-my.sharepoint.com/:f:/r/personal/imen_jaoua_umontreal_ca/Documents/dataset_checkpoints/dataset_training?csf=1&web=1&e=uFO1c9)
+
+### Checkpoints
+
+[Model checkpoints](https://udemontreal-my.sharepoint.com/:f:/r/personal/imen_jaoua_umontreal_ca/Documents/dataset_checkpoints/checkpoints?csf=1&web=1&e=y3PvT0)
 
 ---
 
 ## Notes
 
-- Repository scoring is currently disabled  
-- LLM-based filtering ensures dataset quality  
-- Dataset combines:
-  - Automatically aligned data  
-  - CodeSearchNet samples  
+- Make sure all dataset paths are correctly updated before running the scripts.
+- Make sure all model paths are correctly updated before running answer generation, fine-tuning, and testing.
+- The Hugging Face models must be downloaded locally before running the answer generation scripts.
