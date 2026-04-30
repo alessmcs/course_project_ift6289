@@ -1,0 +1,24 @@
+
+# Environment variables
+.env
+
+# Build output
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# dataset files
+datasets/
+
+# model checkpoints
+ppo_student/
+sft_student/
+
+# results
+results/
+
+# teacher rewards
+teacher_rewards.json
