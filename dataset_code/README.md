@@ -2,7 +2,7 @@
 
 This repository implements a pipeline to build a dataset of aligned **code–documentation pairs** and generate **question–answer samples**.
 
-You may use our Zenodo repository to access the jsonl files to which our scripts write. [ZENODO LINK!!!]
+You may use our Zenodo repository to access the jsonl files to which our scripts write, here: https://zenodo.org/records/19828242?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjYzMTMyZjExLTAxMTUtNGExNS04NDlhLWFhM2NiODI5ZWM0YSIsImRhdGEiOnt9LCJyYW5kb20iOiI5NGE5Y2UzNmU4ODhlY2FmOTVlYzJhY2QxYTAwODNjYyJ9.C9sYXLi9b4ykAz7msKZwDcogdLIbxTbfX0icBoS5FOQb5TEtRPlQcp9FoBxymF5PzYj9ByowN50NIcVQEbP8Ng 
 ---
 
 ## Pipeline Overview
