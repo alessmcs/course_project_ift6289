@@ -23,10 +23,10 @@ DATASET_PATH     = "results.jsonl"   # output of question generation
 OUTPUT_PATH      = "sft_dataset.jsonl"
 SAVE_STEPS       = 50
 
-MAX_SEQ_LEN_SMALL = 4096
-MAX_SEQ_LEN_BIG   = 4096
-MAX_NEW_TOKENS_SMALL = 512   # raw answer from 8B
-MAX_NEW_TOKENS_BIG   = 768   # improved answer from 70B
+MAX_SEQ_LEN_SMALL = 8192
+MAX_SEQ_LEN_BIG   = 8192
+MAX_NEW_TOKENS_SMALL = 128   # raw answer from 8B
+MAX_NEW_TOKENS_BIG   = 160   # improved answer from 70B
 
 # ── Prompts ────────────────────────────────────────────────────────────────────
 
@@ -167,7 +167,7 @@ small_generator = ExLlamaV2DynamicGenerator(
 
 small_settings = ExLlamaV2Sampler.Settings(
     token_repetition_penalty=1.1,
-    temperature=0.7,
+    temperature=0.2,
 )
 
 print("Loading 70B model (GPUs 1, 2, 3)...")
@@ -183,7 +183,7 @@ big_generator = ExLlamaV2DynamicGenerator(
 
 big_settings = ExLlamaV2Sampler.Settings(
     token_repetition_penalty=1.1,
-    temperature=0.3,  # lower temp for the improver — we want precision
+    temperature=0.1,  # lower temp for the improver — we want precision
 )
 
 # ── Dataset ────────────────────────────────────────────────────────────────────
